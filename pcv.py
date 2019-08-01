@@ -2,10 +2,8 @@
     Problema do Caixeiro Viajante utilizando solucao inicial randomica
     e utilizando algoritmo genetico para otimizar a solucao
 '''
-
 import random
 # import sys
-
 
 class GraphGenerator:
 
@@ -32,7 +30,6 @@ class GraphGenerator:
             print('Adjacentes de %d:' %i, end=' ')
             for adj in self.graph[i]:
                 print('(%d)%d -> ' %(self.costs[i,adj], adj), end=' ')
-
 
     def pcv_random(self, iterations):
         '''
@@ -70,7 +67,8 @@ class GraphGenerator:
 
         for i in range(iterations):
             best_circuit, lowest_cost = gen_cir(best_circuit, lowest_cost)
-            print('Melhor circuito: %s - Custo: %d' % (str(best_circuit), lowest_cost))
+
+        print('Melhor circuito: %s - Custo: %d' % (str(best_circuit), lowest_cost))
 
     def pcv_genetic(self, pop_size, generations, tournament_size, prob_cross, prob_mutation):
         '''
@@ -169,12 +167,7 @@ class GraphGenerator:
                                     cross2.append(e)
                                     valid_cross2.remove(e)
 
-                            # print(ponto)
-                            # print('solucao 1: %s' %(str(population[parent1])))
-                            # print('solucao 2: %s ' %(str(population[parent2])))
-                            # print('crossover 1: %s ' %(str(cross1)))
-                            # print('crossover 2: %s ' %(str(cross2)))
-                            #
+
                             break
 
                     # aplica a mutacao
@@ -188,7 +181,6 @@ class GraphGenerator:
                                 cross1[gene1], cross1[gene2] = cross1[gene2], cross1[gene1]
                                 cross2[gene1], cross2[gene2] = cross2[gene2], cross2[gene1]
                                 break;
-
 
                     # obtem fitness dos pais e dos filhos
                     fitness_parent1 = get_cost(population[parent1])
@@ -210,18 +202,19 @@ class GraphGenerator:
                             population.pop(parent2)
                         population.append(cross2)
 
-                # obtem o Melhor
-                best_indivi = population[pop_size-1][:]
+        # obtem o Melhor individiduo da populacao
+        best_indivi = population[0][:]
 
-                for indivi in range(1, pop_size):
-                    if get_cost(population[indivi]) < get_cost(best_indivi):
-                        best_indivi = population[indivi][:]
+        for indivi in range(1, pop_size):
+            if get_cost(population[indivi]) < get_cost(best_indivi):
+                best_indivi = population[indivi][:]
+            if indivi == 1:
+                print('Iter %d: Melhor circuito: %s - Custo: %d' % (1, str(best_indivi), get_cost(best_indivi)))
 
-                print('Iter %d: Melhor circuito: %s - Custo: %d' % (i+ 1, str(best_indivi), get_cost(best_indivi)))
+        print('Iter %d: Melhor circuito: %s - Custo: %d' % (i+ 1, str(best_indivi), get_cost(best_indivi)))
 
-
-graph = GraphGenerator(8)
-print('===================== RANDOM =====================')
-graph.pcv_random(100)
+graph = GraphGenerator(15)
+print('=====================  RANDOM  =====================')
+graph.pcv_random(1000)
 print('===================== GENÉTICO =====================')
-graph.pcv_genetic(50, 10, 2, 0.7, 0.1)
+graph.pcv_genetic(pop_size=1000, generations=1000, tournament_size=2, prob_cross=0.7, prob_mutation=0.2)
