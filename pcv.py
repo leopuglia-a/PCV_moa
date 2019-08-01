@@ -208,12 +208,12 @@ class GraphGenerator:
         for indivi in range(1, pop_size):
             if get_cost(population[indivi]) < get_cost(best_indivi):
                 best_indivi = population[indivi][:]
-            if indivi == 1:
-                print('Iter %d: Melhor circuito: %s - Custo: %d' % (1, str(best_indivi), get_cost(best_indivi)))
+                # mostra onde houve alteracao
+                print('Iter %d: Melhor circuito: %s - Custo: %d' % (indivi, str(best_indivi), get_cost(best_indivi)))
 
         print('Iter %d: Melhor circuito: %s - Custo: %d' % (i+ 1, str(best_indivi), get_cost(best_indivi)))
 
-graph = GraphGenerator(15)
+graph = GraphGenerator(20)
 print('=====================  RANDOM  =====================')
 graph.pcv_random(1000)
 print('===================== GENÉTICO =====================')
